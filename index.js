@@ -1,11 +1,15 @@
-const express = require("express");
-const port = process.env.PORT || 8080;
+const express    = require('express');
+const app        = express();
+const bodyParser = require('body-parser');
+const router 	   = express.Router();
+const port 	   = process.env.PORT || 8080;
 
-const app = express();
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
-app.get("/", (req, res) => {
-  res.send("Initial commit!");
-})
+require('./routes')(router);
+app.use('/', router);
+
 
 app.listen(port, () => {
   console.log(`Listening to ${port}`);
