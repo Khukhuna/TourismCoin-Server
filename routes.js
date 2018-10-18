@@ -1,7 +1,7 @@
-const auth = require('basic-auth');
 const jwt = require('jsonwebtoken');
 
 const register = require('./authentication/register');
+const login = require("./authentication/login.js");
 
 module.exports = router => {
 
@@ -30,5 +30,23 @@ module.exports = router => {
           message: err.message
         }));
     }
+  });
+
+  router.post('/login', (req, res) => {
+		const username = req.body.username;
+    const password = req.body.password;
+
+    if (!username || !password) {
+			res.status(400).json({ message: 'Invalid Request !' });
+		}else {
+			login.loginUser(username, password)
+			   .then(result => {
+				       const token = jwt.sign(result, "SECRET_KEY", { expiresIn: 1440 });
+				       res.status(result.status).json({ message: result.message, token: token });
+			   })
+         .catch(err => {
+           res.status(505).json({ message: err.message })
+         });
+		}
   });
 }
