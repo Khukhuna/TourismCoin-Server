@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const register = require('./authentication/register');
 const login = require("./authentication/login.js");
+const profile = require("./authentication/profiles.js");
 
 module.exports = router => {
 
@@ -48,5 +49,21 @@ module.exports = router => {
            res.status(505).json({ message: err.message })
          });
 		}
+  });
+
+  router.post('/profiles', (req, res) => {
+    const username = req.body.username;
+    // Token validation will be implemented later if i'll have enought time
+    if(!username){
+      res.status(400).json({ message: "Invalid Request! "});
+    }else{
+      profile.getProfile(username)
+      .then(result => {
+        res.json(result);
+      })
+      .catch(err => {
+        res.status(res.status).json({ message: err.message });
+      });
+    }
   });
 }
