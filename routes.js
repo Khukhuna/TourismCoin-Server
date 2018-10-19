@@ -51,9 +51,9 @@ module.exports = router => {
 		}
   });
 
-  router.post('/profiles', (req, res) => {
-    const username = req.body.username;
-    // Token validation will be implemented later if i'll have enought time
+  router.get('/profiles/:username', (req, res) => {
+    const username = req.params.username;
+    // Token validation will be implemented later if i'll have enough time
     if(!username){
       res.status(400).json({ message: "Invalid Request! "});
     }else{
